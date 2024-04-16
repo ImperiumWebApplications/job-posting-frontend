@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
-const Login = () => {
+const Login = (props) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -29,11 +31,15 @@ const Login = () => {
         password,
       });
       const token = response.data.token;
-      // Store the token in local storage or state management (e.g., Redux)
-      // Redirect to the authenticated route or show success message
+      // Store the token in local storage
+      localStorage.setItem("token", token);
+      // Call the onLogin function passed from App.js
+      props.onLogin();
+      // Redirect to the home page after setting the token
+      navigate("/", { replace: true });
     } catch (error) {
       // Handle login error
-      validationErrors.loginError = "Invalid credentials";
+      validationErrors.loginError = "Invalid Credentials";
       setErrors(validationErrors);
     }
   };
