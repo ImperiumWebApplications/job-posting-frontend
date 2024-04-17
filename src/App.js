@@ -12,6 +12,7 @@ import Home from "./Home";
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [username, setUsername] = useState("");
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -25,6 +26,10 @@ const App = () => {
   const handleLogout = () => {
     localStorage.removeItem("token");
     setIsLoggedIn(false);
+  };
+
+  const setUsernameForUser = (username) => {
+    setUsername(username);
   };
 
   return (
@@ -78,10 +83,31 @@ const App = () => {
           <Routes>
             <Route
               path="/"
-              element={isLoggedIn ? <Home /> : <Navigate to="/login" replace />}
+              element={
+                isLoggedIn ? (
+                  <Home username={username} />
+                ) : (
+                  <Navigate to="/login" replace />
+                )
+              }
             />
-            <Route path="/register" element={<Register />} />
-            <Route path="/login" element={<Login onLogin={handleLogin} />} />
+            <Route
+              path="/register"
+              element={!isLoggedIn ? <Register /> : <Navigate to="/" replace />}
+            />
+            <Route
+              path="/login"
+              element={
+                !isLoggedIn ? (
+                  <Login
+                    onLogin={handleLogin}
+                    setUsernameForUser={setUsernameForUser}
+                  />
+                ) : (
+                  <Navigate to="/" replace />
+                )
+              }
+            />
           </Routes>
         </div>
       </div>
