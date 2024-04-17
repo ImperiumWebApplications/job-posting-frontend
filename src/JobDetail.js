@@ -20,7 +20,7 @@ const JobDetail = () => {
     const fetchApplicants = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5002/api/jobs/${id}/applicants`,
+          `/api/jobs/${id}/applicants`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
