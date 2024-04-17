@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "http://jobsdemobackend-env.eba-5iqc5rz3.us-east-1.elasticbeanstalk.com/$1"
+    }
+  ]
+}
