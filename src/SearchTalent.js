@@ -11,7 +11,7 @@ const SearchTalent = () => {
     const fetchJobSeekers = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5002/api/job-seekers",
+          `${process.env.REACT_APP_BACKEND_API_ROOT_URL}/api/job-seekers`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,

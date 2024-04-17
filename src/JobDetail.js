@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 
 const JobDetail = () => {
   const { id } = useParams();
@@ -14,11 +14,32 @@ const JobDetail = () => {
   const [budget, setBudget] = useState("");
   const [duration, setDuration] = useState("");
 
+  const [applicants, setApplicants] = useState([]);
+
+  useEffect(() => {
+    const fetchApplicants = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:5002/api/jobs/${id}/applicants`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+        setApplicants(response.data.applicants);
+      } catch (error) {
+        console.error("Error fetching applicants:", error);
+      }
+    };
+    fetchApplicants();
+  }, [id]);
+
   useEffect(() => {
     const fetchJobDetails = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5002/api/jobs/${id}`,
+          `${process.env.REACT_APP_BACKEND_API_ROOT_URL}/api/jobs/${id}`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -46,7 +67,7 @@ const JobDetail = () => {
   const handleUpdate = async () => {
     try {
       await axios.put(
-        `http://localhost:5002/api/jobs/${id}`,
+        `${process.env.REACT_APP_BACKEND_API_ROOT_URL}/api/jobs/${id}`,
         {
           jobTitle,
           jobDescription,
@@ -183,6 +204,27 @@ const JobDetail = () => {
             >
               Edit
             </button>
+          </div>
+          <div className="bg-white shadow-md rounded-lg p-6 mb-8">
+            <h3 className="text-xl font-bold text-center mb-4">Applicants</h3>
+            <div className="text-center">
+              {applicants.length > 0 ? (
+                <ul>
+                  {applicants.map((applicant) => (
+                    <li key={applicant.user_id} className="mb-2">
+                      <Link
+                        to={`/job-seeker/${applicant.username}`}
+                        className="text-blue-500 hover:text-blue-700"
+                      >
+                        {applicant.username}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p>No applicants found.</p>
+              )}
+            </div>
           </div>
         </div>
       )}

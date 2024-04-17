@@ -19,11 +19,14 @@ const PostJob = () => {
 
   const fetchJobs = async () => {
     try {
-      const response = await axios.get("http://localhost:5002/api/jobs_for_user", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
+      const response = await axios.get(
+        `${process.env.REACT_APP_BACKEND_API_ROOT_URL}/api/jobs_for_user`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
       setJobs(response.data.jobs);
     } catch (error) {
       console.error("Error fetching jobs:", error);
@@ -49,7 +52,7 @@ const PostJob = () => {
 
     try {
       await axios.post(
-        "http://localhost:5002/api/jobs_for_user",
+        `${process.env.REACT_APP_BACKEND_API_ROOT_URL}/api/jobs_for_user`,
         {
           jobTitle,
           jobDescription,

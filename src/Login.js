@@ -24,10 +24,13 @@ const Login = (props) => {
     }
 
     try {
-      const response = await axios.post("http://localhost:5002/api/login", {
-        username,
-        password,
-      });
+      const response = await axios.post(
+        `${process.env.REACT_APP_BACKEND_API_ROOT_URL}/api/login`,
+        {
+          username,
+          password,
+        }
+      );
       const token = response.data.token;
       // Store the token in local storage
       localStorage.setItem("token", token);

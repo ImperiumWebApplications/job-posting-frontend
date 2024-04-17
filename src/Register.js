@@ -26,10 +26,13 @@ const Register = () => {
     }
 
     try {
-      await axios.post("http://localhost:5002/api/register", {
-        username,
-        password,
-      });
+      await axios.post(
+        `${process.env.REACT_APP_BACKEND_API_ROOT_URL}/api/register`,
+        {
+          username,
+          password,
+        }
+      );
       navigate("/login");
     } catch (error) {
       console.log(error);

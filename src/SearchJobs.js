@@ -11,14 +11,17 @@ const SearchJobs = () => {
     console.log("Running code now with title filter");
     const fetchJobs = async () => {
       try {
-        const response = await axios.get("http://localhost:5002/api/jobs", {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-          params: {
-            job_title: titleFilter,
-          },
-        });
+        const response = await axios.get(
+          `${process.env.REACT_APP_BACKEND_API_ROOT_URL}/api/jobs`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+            params: {
+              job_title: titleFilter,
+            },
+          }
+        );
         setJobs(response.data.jobs);
       } catch (error) {
         console.error("Error fetching jobs:", error);
@@ -34,7 +37,7 @@ const SearchJobs = () => {
         setIsLoading(true);
 
         const response = await axios.get(
-          "http://localhost:5002/api/applied-jobs",
+          `${process.env.REACT_APP_BACKEND_API_ROOT_URL}/api/applied-jobs`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -58,7 +61,7 @@ const SearchJobs = () => {
   const handleApplyJob = async (jobId) => {
     try {
       await axios.post(
-        "http://localhost:5002/api/apply-job",
+        `${process.env.REACT_APP_BACKEND_API_ROOT_URL}/api/apply-job`,
         { jobId },
         {
           headers: {
