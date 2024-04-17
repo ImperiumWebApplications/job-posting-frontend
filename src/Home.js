@@ -88,6 +88,7 @@ const Home = () => {
     const formData = new FormData(event.target);
 
     try {
+      setIsLoading(true);
       await axios.post("http://localhost:5002/api/update-user", formData, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -106,7 +107,9 @@ const Home = () => {
 
       setUserDetails(userDetailsResponse.data.userDetails);
       setIsEditMode(false);
+      setIsLoading(false);
     } catch (error) {
+      setIsLoading(false);
       console.error("Error updating profile:", error);
     }
   };
@@ -232,40 +235,80 @@ const Home = () => {
           ) : (
             <>
               {userDetails.companyName && (
-                <div>
-                  <p>
-                    <strong>Company Name:</strong> {userDetails.companyName}
-                  </p>
-                  <p>
-                    <strong>Address:</strong> {userDetails.address}
-                  </p>
-                </div>
+                <>
+                  <div className="bg-white shadow-md rounded-lg p-6 mb-8">
+                    <h3 className="text-xl font-bold text-center mb-4">
+                      Company Details
+                    </h3>
+                    <div className="text-center">
+                      <p className="mb-2">
+                        <strong>Company Name:</strong> {userDetails.companyName}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="bg-white shadow-md rounded-lg p-6 mb-8">
+                    <h3 className="text-xl font-bold text-center mb-4">
+                      Company Address
+                    </h3>
+                    <div className="text-center">
+                      <p className="mb-2">{userDetails.address}</p>
+                    </div>
+                  </div>
+                </>
               )}
               {userDetails.firstName && (
-                <div>
-                  <p>
-                    <strong>Name:</strong> {userDetails.firstName}{" "}
-                    {userDetails.lastName}
-                  </p>
-                  <p>
-                    <strong>Skills:</strong> {userDetails.skills}
-                  </p>
-                  <p>
-                    <strong>Work Experience:</strong>{" "}
-                    {userDetails.workExperience}
-                  </p>
+                <>
+                  <div className="bg-white shadow-md rounded-lg p-6 mb-8">
+                    <h3 className="text-xl font-bold text-center mb-4">
+                      Personal Information
+                    </h3>
+                    <div className="text-center">
+                      <p className="mb-2">
+                        <strong>Name:</strong> {userDetails.firstName}{" "}
+                        {userDetails.lastName}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="bg-white shadow-md rounded-lg p-6 mb-8">
+                    <h3 className="text-xl font-bold text-center mb-4">
+                      Email
+                    </h3>
+                    <div className="text-center">
+                      <p className="mb-2">{userDetails.email}</p>
+                    </div>
+                  </div>
+                  <div className="bg-white shadow-md rounded-lg p-6 mb-8">
+                    <h3 className="text-xl font-bold text-center mb-4">
+                      Skills
+                    </h3>
+                    <div className="text-center">
+                      <p>{userDetails.skills}</p>
+                    </div>
+                  </div>
+                  <div className="bg-white shadow-md rounded-lg p-6 mb-8">
+                    <h3 className="text-xl font-bold text-center mb-4">
+                      Work Experience
+                    </h3>
+                    <div className="text-center">
+                      <p>{userDetails.workExperience}</p>
+                    </div>
+                  </div>
                   {userDetails.resume_url && (
-                    <p>
-                      <strong>Resume:</strong>{" "}
-                      <a
-                        href={userDetails.resume_url}
-                        className="text-blue-500 hover:text-blue-700 underline"
-                      >
-                        Download
-                      </a>
-                    </p>
+                    <div className="bg-white shadow-md rounded-lg p-6">
+                      <h3 className="text-xl font-bold text-center mb-4">
+                        Resume
+                      </h3>
+                      <div className="text-center">
+                        <a
+                          href={userDetails.resume_url}
+                          className="text-blue-500 hover:text-blue-700 underline"
+                        >
+                          Download Resume
+                        </a>
+                      </div>
+                    </div>
                   )}
-                </div>
+                </>
               )}
             </>
           )}
@@ -306,6 +349,12 @@ const renderForm = (profileType, handleSubmit) => {
             className="p-2 border rounded w-full"
             name="lastName"
             placeholder="Last Name"
+            required
+          />
+          <input
+            className="p-2 border rounded w-full"
+            name="email"
+            placeholder="Email"
             required
           />
           <input

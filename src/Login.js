@@ -1,12 +1,10 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 
 const Login = (props) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
-  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -36,7 +34,7 @@ const Login = (props) => {
       // Call the onLogin function passed from App.js
       props.onLogin();
       // Redirect to the home page after setting the token
-      navigate("/", { replace: true });
+      props.afterLogin(token);
     } catch (error) {
       // Handle login error
       validationErrors.loginError = "Invalid Credentials";

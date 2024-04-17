@@ -9,14 +9,37 @@ import {
 import Register from "./Register";
 import Login from "./Login";
 import Home from "./Home";
-
+import SearchJobs from "./SearchJobs";
+import SearchTalent from "./SearchTalent";
+import PostJob from "./PostJob";
+import JobSeekerProfile from "./JobSeekerProfile";
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userProfile, setUserProfile] = useState(null);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
     setIsLoggedIn(token !== null);
+
+    if (token) {
+      // Fetch user profile from the server based on the token
+      fetchUserProfile(token);
+    }
   }, []);
+
+  const fetchUserProfile = async (token) => {
+    try {
+      const response = await fetch("http://localhost:5002/api/user-details", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const data = await response.json();
+      setUserProfile(data.userDetails);
+    } catch (error) {
+      console.error("Error fetching user profile:", error);
+    }
+  };
 
   const handleLogin = () => {
     setIsLoggedIn(true);
@@ -25,6 +48,7 @@ const App = () => {
   const handleLogout = () => {
     localStorage.removeItem("token");
     setIsLoggedIn(false);
+    setUserProfile(null);
   };
 
   return (
@@ -37,12 +61,38 @@ const App = () => {
           <div className="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
             <div className="text-sm lg:flex-grow">
               {isLoggedIn && (
-                <Link
-                  to="/"
-                  className="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-gray-200 mr-4"
-                >
-                  Home
-                </Link>
+                <>
+                  <Link
+                    to="/"
+                    className="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-gray-200 mr-4"
+                  >
+                    Home
+                  </Link>
+                  {userProfile?.profileType === "jobSeeker" && (
+                    <Link
+                      to="/search-jobs"
+                      className="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-gray-200 mr-4"
+                    >
+                      Search Jobs
+                    </Link>
+                  )}
+                  {userProfile?.profileType === "employer" && (
+                    <>
+                      <Link
+                        to="/search-talent"
+                        className="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-gray-200 mr-4"
+                      >
+                        Search Talent
+                      </Link>
+                      <Link
+                        to="/post-job"
+                        className="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-gray-200 mr-4"
+                      >
+                        Post Job
+                      </Link>
+                    </>
+                  )}
+                </>
               )}
               {!isLoggedIn && (
                 <>
@@ -88,7 +138,42 @@ const App = () => {
               path="/login"
               element={
                 !isLoggedIn ? (
-                  <Login onLogin={handleLogin} />
+                  <Login onLogin={handleLogin} afterLogin={fetchUserProfile} />
+                ) : (
+                  <Navigate to="/" replace />
+                )
+              }
+            />
+            <Route
+              path="/search-jobs"
+              element={
+                isLoggedIn && userProfile?.profileType === "jobSeeker" ? (
+                  <SearchJobs />
+                ) : (
+                  <Navigate to="/" replace />
+                )
+              }
+            />
+            <Route
+              path="/search-talent"
+              element={
+                isLoggedIn && userProfile?.profileType === "employer" ? (
+                  <SearchTalent />
+                ) : (
+                  <Navigate to="/" replace />
+                )
+              }
+            />
+            <Route
+              path="/job-seeker/:username"
+              element={<JobSeekerProfile />}
+            />
+
+            <Route
+              path="/post-job"
+              element={
+                isLoggedIn && userProfile?.profileType === "employer" ? (
+                  <PostJob />
                 ) : (
                   <Navigate to="/" replace />
                 )
