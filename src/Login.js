@@ -35,7 +35,6 @@ const Login = (props) => {
       localStorage.setItem("token", token);
       // Call the onLogin function passed from App.js
       props.onLogin();
-      props.setUsernameForUser(username);
       // Redirect to the home page after setting the token
       navigate("/", { replace: true });
     } catch (error) {
