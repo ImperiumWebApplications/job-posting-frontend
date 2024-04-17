@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { FaEdit } from "react-icons/fa";
 
-const Home = () => {
+const Home = ({ onProfileUpdate }) => {
   const [profileType, setProfileType] = useState(null);
   const [userDetails, setUserDetails] = useState(null);
   const [isRegistered, setIsRegistered] = useState(false);
@@ -58,6 +58,7 @@ const Home = () => {
       console.log(response.data.message);
       setIsRegistered(true);
 
+      // Fetch user profile after creating the profile
       const userDetailsResponse = await axios.get(
         "http://localhost:5002/api/user-details",
         {
@@ -68,6 +69,7 @@ const Home = () => {
       );
 
       setUserDetails(userDetailsResponse.data.userDetails);
+      onProfileUpdate(userDetailsResponse.data.userDetails);
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);

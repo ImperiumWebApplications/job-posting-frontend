@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 
 const SearchTalent = () => {
   const [jobSeekers, setJobSeekers] = useState([]);
+  const [skillFilter, setSkillFilter] = useState("");
 
   useEffect(() => {
     const fetchJobSeekers = async () => {
@@ -15,6 +16,9 @@ const SearchTalent = () => {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
+            params: {
+              skills: skillFilter,
+            },
           }
         );
         setJobSeekers(response.data.jobSeekers);
@@ -24,11 +28,23 @@ const SearchTalent = () => {
     };
 
     fetchJobSeekers();
-  }, []);
+  }, [skillFilter]);
 
+  const handleSkillFilterChange = (e) => {
+    setSkillFilter(e.target.value);
+  };
   return (
     <div>
       <h2 className="text-2xl font-bold mb-4">Search Talent</h2>
+      <div className="mb-4">
+        <input
+          type="text"
+          placeholder="Filter by skills"
+          value={skillFilter}
+          onChange={handleSkillFilterChange}
+          className="border border-gray-300 rounded-md px-4 py-2 w-full"
+        />
+      </div>
       <table className="table-auto w-full">
         <thead>
           <tr>

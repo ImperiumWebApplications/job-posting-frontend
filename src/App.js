@@ -13,6 +13,7 @@ import SearchJobs from "./SearchJobs";
 import SearchTalent from "./SearchTalent";
 import PostJob from "./PostJob";
 import JobSeekerProfile from "./JobSeekerProfile";
+import JobDetail from "./JobDetail";
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userProfile, setUserProfile] = useState(null);
@@ -49,6 +50,10 @@ const App = () => {
     localStorage.removeItem("token");
     setIsLoggedIn(false);
     setUserProfile(null);
+  };
+
+  const handleProfileUpdate = (updatedUserProfile) => {
+    setUserProfile(updatedUserProfile);
   };
 
   return (
@@ -128,7 +133,13 @@ const App = () => {
           <Routes>
             <Route
               path="/"
-              element={isLoggedIn ? <Home /> : <Navigate to="/login" replace />}
+              element={
+                isLoggedIn ? (
+                  <Home onProfileUpdate={handleProfileUpdate} />
+                ) : (
+                  <Navigate to="/login" replace />
+                )
+              }
             />
             <Route
               path="/register"
@@ -174,6 +185,16 @@ const App = () => {
               element={
                 isLoggedIn && userProfile?.profileType === "employer" ? (
                   <PostJob />
+                ) : (
+                  <Navigate to="/" replace />
+                )
+              }
+            />
+            <Route
+              path="/jobs/:id"
+              element={
+                isLoggedIn && userProfile?.profileType === "employer" ? (
+                  <JobDetail />
                 ) : (
                   <Navigate to="/" replace />
                 )
