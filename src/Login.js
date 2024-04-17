@@ -31,9 +31,7 @@ const Login = (props) => {
           password,
         },
         {
-          httpsAgent: new axios.HttpsAgent({
-            rejectUnauthorized: false,
-          }),
+          httpsAgent: { rejectUnauthorized: false },
         }
       );
       const token = response.data.token;
