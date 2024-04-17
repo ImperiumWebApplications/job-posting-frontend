@@ -29,9 +29,6 @@ const Login = (props) => {
         {
           username,
           password,
-        },
-        {
-          httpsAgent: { rejectUnauthorized: false },
         }
       );
       const token = response.data.token;
