@@ -27,7 +27,7 @@ const Register = () => {
 
     try {
       await axios.post(
-        `${process.env.REACT_APP_BACKEND_API_ROOT_URL}/api/register`,
+        `/api/register`,
         {
           username,
           password,

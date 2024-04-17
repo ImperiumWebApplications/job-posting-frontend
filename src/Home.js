@@ -13,7 +13,7 @@ const Home = ({ onProfileUpdate }) => {
     const fetchRegistrationStatus = async () => {
       try {
         const response = await axios.get(
-          `${process.env.REACT_APP_BACKEND_API_ROOT_URL}/api/user-details`,
+          `/api/user-details`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -46,7 +46,7 @@ const Home = ({ onProfileUpdate }) => {
 
     try {
       const response = await axios.post(
-        `${process.env.REACT_APP_BACKEND_API_ROOT_URL}/api/profile/${profileType}`,
+        `/api/profile/${profileType}`,
         formData,
         {
           headers: {
@@ -60,7 +60,7 @@ const Home = ({ onProfileUpdate }) => {
 
       // Fetch user profile after creating the profile
       const userDetailsResponse = await axios.get(
-        `${process.env.REACT_APP_BACKEND_API_ROOT_URL}/api/user-details`,
+        `/api/user-details`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -92,7 +92,7 @@ const Home = ({ onProfileUpdate }) => {
     try {
       setIsLoading(true);
       await axios.post(
-        `${process.env.REACT_APP_BACKEND_API_ROOT_URL}/api/update-user`,
+        `/api/update-user`,
         formData,
         {
           headers: {
@@ -103,7 +103,7 @@ const Home = ({ onProfileUpdate }) => {
       );
 
       const userDetailsResponse = await axios.get(
-        `${process.env.REACT_APP_BACKEND_API_ROOT_URL}/api/user-details`,
+        `/api/user-details`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,

@@ -10,17 +10,14 @@ const SearchTalent = () => {
   useEffect(() => {
     const fetchJobSeekers = async () => {
       try {
-        const response = await axios.get(
-          `${process.env.REACT_APP_BACKEND_API_ROOT_URL}/api/job-seekers`,
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-            params: {
-              skills: skillFilter,
-            },
-          }
-        );
+        const response = await axios.get(`/api/job-seekers`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          params: {
+            skills: skillFilter,
+          },
+        });
         setJobSeekers(response.data.jobSeekers);
       } catch (error) {
         console.error("Error fetching job seekers:", error);

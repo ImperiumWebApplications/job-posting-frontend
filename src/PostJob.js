@@ -20,7 +20,7 @@ const PostJob = () => {
   const fetchJobs = async () => {
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_BACKEND_API_ROOT_URL}/api/jobs_for_user`,
+        `/api/jobs_for_user`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -52,7 +52,7 @@ const PostJob = () => {
 
     try {
       await axios.post(
-        `${process.env.REACT_APP_BACKEND_API_ROOT_URL}/api/jobs_for_user`,
+        `/api/jobs_for_user`,
         {
           jobTitle,
           jobDescription,

@@ -39,7 +39,7 @@ const JobDetail = () => {
     const fetchJobDetails = async () => {
       try {
         const response = await axios.get(
-          `${process.env.REACT_APP_BACKEND_API_ROOT_URL}/api/jobs/${id}`,
+          `/api/jobs/${id}`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -67,7 +67,7 @@ const JobDetail = () => {
   const handleUpdate = async () => {
     try {
       await axios.put(
-        `${process.env.REACT_APP_BACKEND_API_ROOT_URL}/api/jobs/${id}`,
+        `/api/jobs/${id}`,
         {
           jobTitle,
           jobDescription,

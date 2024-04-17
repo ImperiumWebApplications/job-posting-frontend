@@ -31,7 +31,7 @@ const App = () => {
   const fetchUserProfile = async (token) => {
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_BACKEND_API_ROOT_URL}/api/user-details`,
+        `/api/user-details`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

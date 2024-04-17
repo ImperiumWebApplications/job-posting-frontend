@@ -12,7 +12,7 @@ const SearchJobs = () => {
     const fetchJobs = async () => {
       try {
         const response = await axios.get(
-          `${process.env.REACT_APP_BACKEND_API_ROOT_URL}/api/jobs`,
+          `/api/jobs`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -37,7 +37,7 @@ const SearchJobs = () => {
         setIsLoading(true);
 
         const response = await axios.get(
-          `${process.env.REACT_APP_BACKEND_API_ROOT_URL}/api/applied-jobs`,
+          `/api/applied-jobs`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -61,7 +61,7 @@ const SearchJobs = () => {
   const handleApplyJob = async (jobId) => {
     try {
       await axios.post(
-        `${process.env.REACT_APP_BACKEND_API_ROOT_URL}/api/apply-job`,
+        `/api/apply-job`,
         { jobId },
         {
           headers: {

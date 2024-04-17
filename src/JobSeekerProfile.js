@@ -10,7 +10,7 @@ const JobSeekerProfile = () => {
     const fetchJobSeekerDetails = async () => {
       try {
         const response = await axios.get(
-          `${process.env.REACT_APP_BACKEND_API_ROOT_URL}/api/job-seeker/${username}`,
+          `/api/job-seeker/${username}`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
