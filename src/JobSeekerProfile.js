@@ -9,14 +9,11 @@ const JobSeekerProfile = () => {
   useEffect(() => {
     const fetchJobSeekerDetails = async () => {
       try {
-        const response = await axios.get(
-          `/api/job-seeker/${username}`,
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        );
+        const response = await axios.get(`/api/job-seeker/${username}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
         setJobSeekerDetails(response.data.jobSeekerDetails);
       } catch (error) {
         console.error("Error fetching job seeker details:", error);
@@ -44,6 +41,9 @@ const JobSeekerProfile = () => {
           </p>
           <p className="mb-2">
             <strong>Email:</strong> {jobSeekerDetails.email}
+          </p>{" "}
+          <p className="mb-2">
+            <strong>Phone Number:</strong> {jobSeekerDetails.phoneNumber}
           </p>
         </div>
       </div>

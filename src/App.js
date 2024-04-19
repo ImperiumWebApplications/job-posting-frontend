@@ -30,16 +30,13 @@ const App = () => {
 
   const fetchUserProfile = async (token) => {
     try {
-      const response = await fetch(
-        `/api/user-details`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await fetch(`/api/user-details`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       const data = await response.json();
-      setUserProfile(data.userDetails);
+      setUserProfile(data);
     } catch (error) {
       console.error("Error fetching user profile:", error);
     }
@@ -76,30 +73,32 @@ const App = () => {
                   >
                     Home
                   </Link>
-                  {userProfile?.profileType === "jobSeeker" && (
-                    <Link
-                      to="/search-jobs"
-                      className="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-gray-200 mr-4"
-                    >
-                      Search Jobs
-                    </Link>
-                  )}
-                  {userProfile?.profileType === "employer" && (
-                    <>
+                  {userProfile?.profileType === "jobSeeker" &&
+                    userProfile?.isRegistered && (
                       <Link
-                        to="/search-talent"
+                        to="/search-jobs"
                         className="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-gray-200 mr-4"
                       >
-                        Search Talent
+                        Search Jobs
                       </Link>
-                      <Link
-                        to="/post-job"
-                        className="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-gray-200 mr-4"
-                      >
-                        Post Job
-                      </Link>
-                    </>
-                  )}
+                    )}
+                  {userProfile?.profileType === "employer" &&
+                    userProfile?.isRegistered && (
+                      <>
+                        <Link
+                          to="/search-talent"
+                          className="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-gray-200 mr-4"
+                        >
+                          Search Talent
+                        </Link>
+                        <Link
+                          to="/post-job"
+                          className="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-gray-200 mr-4"
+                        >
+                          Post Job
+                        </Link>
+                      </>
+                    )}
                 </>
               )}
               {!isLoggedIn && (

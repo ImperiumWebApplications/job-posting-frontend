@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 const Register = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [profileType, setProfileType] = useState("");
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
 
@@ -19,6 +20,9 @@ const Register = () => {
     if (!password) {
       validationErrors.password = "Password is required";
     }
+    if (!profileType) {
+      validationErrors.profileType = "Profile type is required";
+    }
 
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
@@ -26,13 +30,11 @@ const Register = () => {
     }
 
     try {
-      await axios.post(
-        `/api/register`,
-        {
-          username,
-          password,
-        }
-      );
+      await axios.post(`/api/register`, {
+        username,
+        password,
+        profileType,
+      });
       navigate("/login");
     } catch (error) {
       console.log(error);
@@ -42,6 +44,25 @@ const Register = () => {
     }
   };
 
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    if (name === "username") {
+      setUsername(value);
+      if (value) {
+        setErrors((prevErrors) => ({ ...prevErrors, username: "" }));
+      }
+    }
+    if (name === "password") {
+      setPassword(value);
+      if (value) {
+        setErrors((prevErrors) => ({ ...prevErrors, password: "" }));
+      }
+    }
+    if (name === "profileType") {
+      setProfileType(value);
+      setErrors((prevErrors) => ({ ...prevErrors, profileType: "" }));
+    }
+  };
   return (
     <div className="flex justify-center items-center h-screen">
       <form
@@ -65,10 +86,11 @@ const Register = () => {
               errors.username ? "border-red-500" : ""
             }`}
             id="username"
+            name="username"
             type="text"
             placeholder="Username"
             value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            onChange={handleInputChange}
           />
           {errors.username && (
             <p className="text-red-500 text-xs italic">{errors.username}</p>
@@ -86,13 +108,46 @@ const Register = () => {
               errors.password ? "border-red-500" : ""
             }`}
             id="password"
+            name="password"
             type="password"
             placeholder="******************"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={handleInputChange}
           />
           {errors.password && (
             <p className="text-red-500 text-xs italic">{errors.password}</p>
+          )}
+        </div>
+        <div className="mb-4">
+          <label className="block text-gray-700 text-sm font-bold mb-2">
+            Profile Type
+          </label>
+          <div className="flex items-center">
+            <input
+              type="radio"
+              id="employer"
+              name="profileType"
+              value="employer"
+              checked={profileType === "employer"}
+              onChange={handleInputChange}
+              className="mr-2"
+            />
+            <label htmlFor="employer">Employer</label>
+          </div>
+          <div className="flex items-center">
+            <input
+              type="radio"
+              id="jobSeeker"
+              name="profileType"
+              value="jobSeeker"
+              checked={profileType === "jobSeeker"}
+              onChange={handleInputChange}
+              className="mr-2"
+            />
+            <label htmlFor="jobSeeker">Job Seeker</label>
+          </div>
+          {errors.profileType && (
+            <p className="text-red-500 text-xs italic">{errors.profileType}</p>
           )}
         </div>
         <div className="flex items-center justify-between">
