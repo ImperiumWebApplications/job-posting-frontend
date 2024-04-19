@@ -12,14 +12,11 @@ const Home = ({ onProfileUpdate }) => {
   useEffect(() => {
     const fetchRegistrationStatus = async () => {
       try {
-        const response = await axios.get(
-          `/api/user-details`,
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        );
+        const response = await axios.get(`/api/user-details`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
         setIsRegistered(response.data.isRegistered);
         if (response.data.isRegistered) {
           setUserDetails(response.data.userDetails);
@@ -59,14 +56,11 @@ const Home = ({ onProfileUpdate }) => {
       setIsRegistered(true);
 
       // Fetch user profile after creating the profile
-      const userDetailsResponse = await axios.get(
-        `/api/user-details`,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
+      const userDetailsResponse = await axios.get(`/api/user-details`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
 
       setUserDetails(userDetailsResponse.data.userDetails);
       onProfileUpdate(userDetailsResponse.data.userDetails);
@@ -91,25 +85,18 @@ const Home = ({ onProfileUpdate }) => {
 
     try {
       setIsLoading(true);
-      await axios.post(
-        `/api/update-user`,
-        formData,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-            "Content-Type": undefined,
-          },
-        }
-      );
+      await axios.post(`/api/update-user`, formData, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "Content-Type": undefined,
+        },
+      });
 
-      const userDetailsResponse = await axios.get(
-        `/api/user-details`,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
+      const userDetailsResponse = await axios.get(`/api/user-details`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
 
       setUserDetails(userDetailsResponse.data.userDetails);
       setIsEditMode(false);
@@ -207,6 +194,14 @@ const Home = ({ onProfileUpdate }) => {
                     name="skills"
                     placeholder="Skills (comma separated)"
                     defaultValue={userDetails.skills}
+                    required
+                  />
+                  <input
+                    className="p-2 border rounded w-full"
+                    maxLength={10}
+                    name="phoneNumber"
+                    placeholder="phoneNumber (phone Number)"
+                    defaultValue={userDetails.phoneNumber}
                     required
                   />
                   <textarea
